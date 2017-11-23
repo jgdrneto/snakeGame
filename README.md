@@ -10,9 +10,9 @@ Live demo [Here](https://node-multiplayer-snake.herokuapp.com/)
 
 Install the latest [Node.js](http://nodejs.org) 6 Stable
 
-`git clone https://github.com/simondiep/node-multiplayer-snake.git`
+`https://github.com/jgdrneto/snakeGame`
 
-`cd node-multiplayer-snake`
+`cd snakeGame`
 
 `npm install`
 
