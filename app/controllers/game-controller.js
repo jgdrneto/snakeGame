@@ -44,8 +44,7 @@ class GameController {
         const self = this;
         io.sockets.on(ServerConfig.IO.DEFAULT_CONNECTION, socket => {
             socket.on(ServerConfig.IO.INCOMING.CANVAS_CLICKED, self._canvasClicked.bind(self, socket));
-            socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket.id));
-
+            socket.on(ServerConfig.IO.INCOMING.KEY_DOWN, self._keyDown.bind(self, socket.id));            
             // Player Service
             socket.on(ServerConfig.IO.INCOMING.NEW_PLAYER,
                 self.playerService.addPlayer.bind(self.playerService, socket));
@@ -142,7 +141,7 @@ class GameController {
         }
     }
 
-    _keyDown(playerId, keyCode) {
+    _keyDown(playerId, keyCode) {     
         GameControlsService.handleKeyDown(this.playerContainer.getPlayer(playerId), keyCode);
     }
 }

@@ -9,12 +9,14 @@
         <a id="top"></a>
         <div id="cover">
             <div class="navigation">
+                <div id="gestureShownHere"></div>
                 <label class="nav-label">You are <input id="player-name" readonly="readonly" maxlength="10"></input></label>
                 <div class="nav-button-bar">
+                    <a href="#top" id="ligarcam" onClick="JSHGToggle($(this))" title="Ligar e desligar gestos">ON/OFF GEST</a>
                     <a href="#top" id="play-or-watch-button" title="Spectate or rejoin game">Watch</a>
                     <a href="#playerSettings" title="Go to settings">Settings</a>
                     <button id="full-screen-button" title="Go into full-screen mode"/>
-                </div>
+                </div>    
             </div>
             <div id="kill-messages">
             </div>
@@ -92,10 +94,96 @@
                 </div> 
             </div>            
         </div>
+        
+        <script type="text/javascript" src="js/jshg/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="js/jshg/ParallelJS-CV.min.js"></script>
+        <script type="text/javascript" src="js/jshg/compatibility.js"></script>
+        <script type="text/javascript" src="js/jshg/helper.js"></script>
+        <script type="text/javascript" src="js/jshg/jshg.js"></script>
+
         <script src="js/jspm_packages/system.js"></script>
         <script src="js/config.js"></script>
         <script>
             System.import('main.js');
         </script>
+        <script>
+            
+            function JSHGToggle(botao){
+
+                if (JSHG.isRunning()) {
+                  JSHG.stop();
+                  document.getElementById("gestureShownHere").innerHTML=""; 
+                }else{
+                  JSHG.learnSkinColor();  
+                }
+
+            }
+            var currentGesture = null;
+
+            var actionReporter = function(gesture) {
+
+                if (currentGesture != null && currentGesture.isSameRelativePos(gesture)){ return;
+                }
+                
+                var e = new Event("keydown");
+                
+                e.altKey=false;
+                e.ctrlKey=false;
+                e.shiftKey=false;
+                e.metaKey=false;
+                e.bubbles=true;
+                
+                if (gesture.isLeft) {
+                    
+                    e.key="d";    // just enter the char you want to send 
+                    e.keyCode=68;
+                    e.which=e.keyCode;
+
+                    console.log("direita");
+
+                } else if (gesture.isRight) {
+
+                    e.key="a";    // just enter the char you want to send 
+                    e.keyCode=65;
+                    e.which=e.keyCode;
+                    
+                    console.log("esquerda");
+
+                }else if (gesture.isUp){
+
+                    e.key="w";    // just enter the char you want to send 
+                    e.keyCode=87;
+                    e.which=e.keyCode;
+
+                    console.log("cima");
+                }else if(gesture.isDown){
+                    
+                    e.key="s";    // just enter the char you want to send 
+                    e.keyCode=83;
+                    e.which=e.keyCode;
+
+                    console.log("abaixo");
+                }
+
+                currentGesture = gesture;
+
+                document.dispatchEvent(e);
+
+            }
+                
+            JSHG.init({
+                "actionCallback": actionReporter, 
+                "gestureDivId": "gestureShownHere",
+                "settings": {
+                    "gestureDisplayWidth": 100,
+                    "gestureDisplayHeight": 80,
+                    "centralAreaRatio": 1/3,
+                    "learningCountDown": 5,
+                    "debugMode": false
+                }
+            });
+            
+        </script>
+
     </body>
 </html>
